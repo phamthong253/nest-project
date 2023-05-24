@@ -1,7 +1,8 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Param, Patch, Post } from '@nestjs/common';
 import { CreateComissionDto } from '../../dtos/CreateCommission.dto';
 import { CommissionService } from '../../services/commission/commission.service';
 import { Commission } from 'src/database/models/Commission.entity';
+import { UpdateComissionDto } from '../../dtos/UpdateComission.dto';
 
 @Controller('commission')
 export class CommissionController {
@@ -17,7 +18,16 @@ export class CommissionController {
     try {
       return this.commissionService.create(createCommissionDto);
     } catch (err) {
-      throw new HttpException('Invalid Commission Type', HttpStatus.BAD_REQUEST, { cause: err });
+      throw new HttpException(err, HttpStatus.BAD_REQUEST, { cause: err });
+    }
+  }
+
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() updateCommissionDto: UpdateComissionDto) {
+    try {
+      this.commissionService.update(id, updateCommissionDto);
+    } catch (err) {
+      throw new HttpException(err, HttpStatus.BAD_REQUEST, { cause: err });
     }
   }
 }

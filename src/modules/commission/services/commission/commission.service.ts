@@ -1,9 +1,10 @@
+import { DeepPartial, Repository } from 'typeorm';
 import { CommissionTypeService } from '../commission-type/commission-type.service';
 import { CreateComissionDto } from '../../dtos/CreateCommission.dto';
+import { UpdateComissionDto } from '../../dtos/UpdateComission.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
 import { Commission } from 'src/database/models/Commission.entity';
-import { Repository } from 'typeorm';
 
 @Injectable()
 export class CommissionService {
@@ -19,7 +20,11 @@ export class CommissionService {
     });
   }
 
-  async create(createCommissionDto: CreateComissionDto) {
+  findById(id: string): Promise<Commission | null> {
+    return this.commissionRepo.findOneBy({ id });
+  }
+
+  async create(createCommissionDto: CreateComissionDto): Promise<Commission> {
     const type = await this.commissionTypeService.findById(createCommissionDto.typeId);
 
     if (!type) {
@@ -29,8 +34,34 @@ export class CommissionService {
     const { name, imageSrc, price } = createCommissionDto;
     const createdTime = Date.now();
     const commissionParams = { name, imageSrc, price, createdTime, type };
-    const commission = this.commissionRepo.create(commissionParams);
 
-    return this.commissionRepo.save(commission);
+    return this.commissionRepo.save(this.commissionRepo.create(commissionParams));
+  }
+
+  async update(id: string, updateCommissionDto: UpdateComissionDto): Promise<Commission> {
+    const commission = await this.findById(id);
+
+    if (!commission) {
+      throw new Error('Invalid Commission Id');
+    }
+
+    const { typeId, ...otherProps } = Object.keys(updateCommissionDto).reduce(
+      (acc, key) => (!!(updateCommissionDto as any)[key] ? { ...acc, [key]: (updateCommissionDto as any)[key] } : acc),
+      {} as UpdateComissionDto,
+    );
+
+    const commissionParams: DeepPartial<Commission> = { ...commission, ...otherProps };
+
+    if (typeId) {
+      const type = await this.commissionTypeService.findById(typeId);
+
+      if (!type) {
+        throw new Error('Invalid Commission Type');
+      }
+
+      commissionParams.type = type;
+    }
+
+    return this.commissionRepo.save(this.commissionRepo.create(commissionParams));
   }
 }
