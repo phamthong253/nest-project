@@ -13,7 +13,7 @@ export class CommissionController {
   }
 
   @Post()
-  create(@Body() createCommissionDto: CreateComissionDto) {
+  create(@Body() createCommissionDto: CreateComissionDto): Promise<Commission> {
     return this.commissionService.create(createCommissionDto);
   }
 }
