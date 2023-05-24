@@ -13,7 +13,7 @@ export class Commission {
   @JoinColumn()
   type: CommissionType;
 
-  @Column()
+  @Column({ type: 'text' })
   imageSrc: string;
 
   @Column()

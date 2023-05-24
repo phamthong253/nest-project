@@ -20,12 +20,10 @@ export class CommissionService {
   }
 
   async create(createCommissionDto: CreateComissionDto) {
-    const type = await this.commissionTypeService.findById(
-      createCommissionDto.typeId,
-    );
+    const type = await this.commissionTypeService.findById(createCommissionDto.typeId);
 
     if (!type) {
-      throw new Error();
+      throw new Error('Invalid Commission Type');
     }
 
     const { name, imageSrc, price } = createCommissionDto;
