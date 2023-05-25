@@ -15,8 +15,12 @@ export class CommissionTypeService {
     return this.commissionTypeRepo.find();
   }
 
-  findById(id: string): Promise<CommissionType | null> {
-    return this.commissionTypeRepo.findOneBy({ id });
+  async findById(id: string): Promise<CommissionType | null> {
+    try {
+      return await this.commissionTypeRepo.findOneBy({ id });
+    } catch (err) {
+      throw new Error('Invalid Commission Type Id');
+    }
   }
 
   /**

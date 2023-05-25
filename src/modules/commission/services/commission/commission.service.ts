@@ -21,7 +21,11 @@ export class CommissionService {
   }
 
   findById(id: string): Promise<Commission | null> {
-    return this.commissionRepo.findOneBy({ id });
+    try {
+      return this.commissionRepo.findOneBy({ id });
+    } catch (err) {
+      throw new Error('Invalid Commission Id');
+    }
   }
 
   async create(createCommissionDto: CreateComissionDto): Promise<Commission> {
