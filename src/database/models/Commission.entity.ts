@@ -1,5 +1,5 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { CommissionType } from './ComissionType.entity';
+import { CommissionType } from './comissionType.entity';
 
 @Entity()
 export class Commission {

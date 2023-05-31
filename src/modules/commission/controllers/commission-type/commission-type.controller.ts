@@ -1,6 +1,6 @@
 import { CommissionTypeService } from '../../services/commission-type/commission-type.service';
 import { ControllerPrefix } from '../../shared/controller-prefix.enum';
-import { CommissionType } from '@models/ComissionType.entity';
+import { CommissionType } from '@models/comissionType.entity';
 import { Route } from '@decorators/route.decorator';
 import { Get } from '@nestjs/common';
 

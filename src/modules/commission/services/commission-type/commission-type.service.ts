@@ -1,6 +1,6 @@
-import { CreateCommissionTypeDto } from '../../dtos/CreateCommissionType.dto';
+import { CreateCommissionTypeDto } from '../../dtos/createCommissionType.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CommissionType } from '@models/ComissionType.entity';
+import { CommissionType } from '@models/comissionType.entity';
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 

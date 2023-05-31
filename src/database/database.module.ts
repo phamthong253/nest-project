@@ -1,8 +1,11 @@
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { CommissionType } from '@models/ComissionType.entity';
-import { Commission } from '@models/Commission.entity';
+import { CommissionType } from '@models/comissionType.entity';
+import { Commission } from '@models/commission.entity';
+import { Permission } from '@models/permission.entity';
 import { Module } from '@nestjs/common';
+import { User } from '@models/user.entity';
+import { Role } from '@models/role.entity';
 
 @Module({
   imports: [
@@ -16,7 +19,7 @@ import { Module } from '@nestjs/common';
         username: configService.get<string>('database.username'),
         password: configService.get<string>('database.password'),
         database: configService.get<string>('database.database'),
-        entities: [Commission, CommissionType],
+        entities: [Commission, CommissionType, User, Permission, Role],
         synchronize: true,
       }),
     }),

@@ -1,9 +1,9 @@
 import { DeepPartial, Repository } from 'typeorm';
 import { CommissionTypeService } from '../commission-type/commission-type.service';
-import { CreateComissionDto } from '../../dtos/CreateCommission.dto';
-import { UpdateComissionDto } from '../../dtos/UpdateComission.dto';
+import { CreateComissionDto } from '../../dtos/createCommission.dto';
+import { UpdateComissionDto } from '../../dtos/updateComission.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Commission } from '@models/Commission.entity';
+import { Commission } from '@models/commission.entity';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()

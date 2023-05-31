@@ -2,9 +2,9 @@ import { CommissionTypeController } from './controllers/commission-type/commissi
 import { CommissionTypeService } from './services/commission-type/commission-type.service';
 import { CommissionController } from './controllers/commission/commission.controller';
 import { CommissionService } from './services/commission/commission.service';
-import { CommissionType } from '@models/ComissionType.entity';
+import { CommissionType } from '@models/comissionType.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Commission } from '@models/Commission.entity';
+import { Commission } from '@models/commission.entity';
 import { Module } from '@nestjs/common';
 
 @Module({
