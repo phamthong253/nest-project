@@ -18,7 +18,7 @@
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "paths": {
-      "@config/*": ["src/shared/config/*"],
+      "@config/*": ["src/@core/config/*"],
       "@decorators/*": ["src/shared/decorators/*"],
       "@helpers/*": ["src/shared/helpers/*"],
       "@models/*": ["src/database/models/*"]
