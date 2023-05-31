@@ -1,10 +1,12 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Get, Param, Patch, Post } from '@nestjs/common';
 import { CreateComissionDto } from '../../dtos/CreateCommission.dto';
 import { UpdateComissionDto } from '../../dtos/UpdateComission.dto';
 import { CommissionService } from '../../services/commission/commission.service';
+import { ControllerPrefix } from '../../shared/controller-prefix.enum';
 import { Commission } from 'src/database/models/Commission.entity';
+import { Route } from 'src/shared/decorators/route.decorator';
 
-@Controller('commission')
+@Route(ControllerPrefix.COMMISSION)
 export class CommissionController {
   constructor(private readonly _commissionService: CommissionService) {}
 
