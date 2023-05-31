@@ -14,15 +14,15 @@ export class CommissionService {
     private readonly _commissionTypeService: CommissionTypeService,
   ) {}
 
-  findAll(): Promise<Commission[]> {
-    return this._commissionRepo.find({
+  async findAll(): Promise<Commission[]> {
+    return await this._commissionRepo.find({
       relations: { type: true },
     });
   }
 
-  findById(id: string): Promise<Commission | null> {
+  async findById(id: string): Promise<Commission | null> {
     try {
-      return this._commissionRepo.findOneBy({ id });
+      return await this._commissionRepo.findOneBy({ id });
     } catch (err) {
       throw new Error('Invalid Commission Id');
     }

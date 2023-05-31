@@ -11,8 +11,8 @@ export class CommissionTypeService {
     private readonly _commissionTypeRepo: Repository<CommissionType>,
   ) {}
 
-  findAll(): Promise<CommissionType[]> {
-    return this._commissionTypeRepo.find();
+  async findAll(): Promise<CommissionType[]> {
+    return await this._commissionTypeRepo.find();
   }
 
   async findById(id: string): Promise<CommissionType | null> {
@@ -26,9 +26,9 @@ export class CommissionTypeService {
   /**
    * Should only be used when a new type is needed.
    */
-  create(createCommissionTypeDto: CreateCommissionTypeDto): Promise<CommissionType> {
+  async create(createCommissionTypeDto: CreateCommissionTypeDto): Promise<CommissionType> {
     const type = this._commissionTypeRepo.create(createCommissionTypeDto);
 
-    return this._commissionTypeRepo.save(type);
+    return await this._commissionTypeRepo.save(type);
   }
 }
