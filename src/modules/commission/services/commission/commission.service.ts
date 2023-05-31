@@ -10,26 +10,26 @@ import { Commission } from 'src/database/models/Commission.entity';
 export class CommissionService {
   constructor(
     @InjectRepository(Commission)
-    private readonly commissionRepo: Repository<Commission>,
-    private readonly commissionTypeService: CommissionTypeService,
+    private readonly _commissionRepo: Repository<Commission>,
+    private readonly _commissionTypeService: CommissionTypeService,
   ) {}
 
   findAll(): Promise<Commission[]> {
-    return this.commissionRepo.find({
+    return this._commissionRepo.find({
       relations: { type: true },
     });
   }
 
   findById(id: string): Promise<Commission | null> {
     try {
-      return this.commissionRepo.findOneBy({ id });
+      return this._commissionRepo.findOneBy({ id });
     } catch (err) {
       throw new Error('Invalid Commission Id');
     }
   }
 
   async create(createCommissionDto: CreateComissionDto): Promise<Commission> {
-    const type = await this.commissionTypeService.findById(createCommissionDto.typeId);
+    const type = await this._commissionTypeService.findById(createCommissionDto.typeId);
 
     if (!type) {
       throw new Error('Invalid Commission Type');
@@ -39,7 +39,7 @@ export class CommissionService {
     const createdTime = Date.now();
     const commissionParams = { name, imageSrc, price, createdTime, type };
 
-    return this.commissionRepo.save(this.commissionRepo.create(commissionParams));
+    return this._commissionRepo.save(this._commissionRepo.create(commissionParams));
   }
 
   async update(id: string, updateCommissionDto: UpdateComissionDto): Promise<Commission> {
@@ -57,7 +57,7 @@ export class CommissionService {
     const commissionParams: DeepPartial<Commission> = { ...commission, ...otherProps };
 
     if (typeId) {
-      const type = await this.commissionTypeService.findById(typeId);
+      const type = await this._commissionTypeService.findById(typeId);
 
       if (!type) {
         throw new Error('Invalid Commission Type');
@@ -66,6 +66,6 @@ export class CommissionService {
       commissionParams.type = type;
     }
 
-    return this.commissionRepo.save(this.commissionRepo.create(commissionParams));
+    return this._commissionRepo.save(this._commissionRepo.create(commissionParams));
   }
 }

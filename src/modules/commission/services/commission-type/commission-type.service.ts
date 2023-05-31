@@ -8,16 +8,16 @@ import { CreateCommissionTypeDto } from '../../dtos/CreateCommissionType.dto';
 export class CommissionTypeService {
   constructor(
     @InjectRepository(CommissionType)
-    private readonly commissionTypeRepo: Repository<CommissionType>,
+    private readonly _commissionTypeRepo: Repository<CommissionType>,
   ) {}
 
   findAll(): Promise<CommissionType[]> {
-    return this.commissionTypeRepo.find();
+    return this._commissionTypeRepo.find();
   }
 
   async findById(id: string): Promise<CommissionType | null> {
     try {
-      return await this.commissionTypeRepo.findOneBy({ id });
+      return await this._commissionTypeRepo.findOneBy({ id });
     } catch (err) {
       throw new Error('Invalid Commission Type Id');
     }
@@ -27,8 +27,8 @@ export class CommissionTypeService {
    * Should only be used when a new type is needed.
    */
   create(createCommissionTypeDto: CreateCommissionTypeDto): Promise<CommissionType> {
-    const type = this.commissionTypeRepo.create(createCommissionTypeDto);
+    const type = this._commissionTypeRepo.create(createCommissionTypeDto);
 
-    return this.commissionTypeRepo.save(type);
+    return this._commissionTypeRepo.save(type);
   }
 }

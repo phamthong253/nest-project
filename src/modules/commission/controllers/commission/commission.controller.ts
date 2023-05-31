@@ -6,20 +6,20 @@ import { Commission } from 'src/database/models/Commission.entity';
 
 @Controller('commission')
 export class CommissionController {
-  constructor(private readonly commissionService: CommissionService) {}
+  constructor(private readonly _commissionService: CommissionService) {}
 
   @Get()
   getAll(): Promise<Commission[]> {
-    return this.commissionService.findAll();
+    return this._commissionService.findAll();
   }
 
   @Post()
   create(@Body() createCommissionDto: CreateComissionDto): Promise<Commission> {
-    return this.commissionService.create(createCommissionDto);
+    return this._commissionService.create(createCommissionDto);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateCommissionDto: UpdateComissionDto): Promise<Commission> {
-    return this.commissionService.update(id, updateCommissionDto);
+    return this._commissionService.update(id, updateCommissionDto);
   }
 }

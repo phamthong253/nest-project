@@ -3,10 +3,10 @@ import { Controller, Get } from '@nestjs/common';
 
 @Controller('commission-type')
 export class CommissionTypeController {
-  constructor(private readonly commissionTypeService: CommissionTypeService) {}
+  constructor(private readonly _commissionTypeService: CommissionTypeService) {}
 
   @Get()
   getAll() {
-    return this.commissionTypeService.findAll();
+    return this._commissionTypeService.findAll();
   }
 }
