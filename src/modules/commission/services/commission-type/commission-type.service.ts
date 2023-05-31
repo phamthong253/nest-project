@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { CommissionType } from 'src/database/models/ComissionType.entity';
-import { Repository } from 'typeorm';
 import { CreateCommissionTypeDto } from '../../dtos/CreateCommissionType.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { CommissionType } from '@models/ComissionType.entity';
+import { Injectable } from '@nestjs/common';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class CommissionTypeService {

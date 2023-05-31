@@ -1,7 +1,7 @@
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { CommissionType } from './models/ComissionType.entity';
-import { Commission } from './models/Commission.entity';
+import { CommissionType } from '@models/ComissionType.entity';
+import { Commission } from '@models/Commission.entity';
 import { Module } from '@nestjs/common';
 
 @Module({

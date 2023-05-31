@@ -3,8 +3,8 @@ import { CommissionTypeService } from '../commission-type/commission-type.servic
 import { CreateComissionDto } from '../../dtos/CreateCommission.dto';
 import { UpdateComissionDto } from '../../dtos/UpdateComission.dto';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Commission } from '@models/Commission.entity';
 import { Injectable } from '@nestjs/common';
-import { Commission } from 'src/database/models/Commission.entity';
 
 @Injectable()
 export class CommissionService {

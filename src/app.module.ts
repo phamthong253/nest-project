@@ -5,8 +5,8 @@ import { AppService } from './app.service';
 import { Module } from '@nestjs/common';
 
 // configs
-import databaseConfiguration from './shared/config/database.configuration';
-import serverConfiguration from './shared/config/server.configuration';
+import databaseConfiguration from '@config/database.configuration';
+import serverConfiguration from '@config/server.configuration';
 
 @Module({
   imports: [

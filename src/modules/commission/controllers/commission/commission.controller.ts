@@ -3,8 +3,8 @@ import { CreateComissionDto } from '../../dtos/CreateCommission.dto';
 import { UpdateComissionDto } from '../../dtos/UpdateComission.dto';
 import { CommissionService } from '../../services/commission/commission.service';
 import { ControllerPrefix } from '../../shared/controller-prefix.enum';
-import { Commission } from 'src/database/models/Commission.entity';
-import { Route } from 'src/shared/decorators/route.decorator';
+import { Commission } from '@models/Commission.entity';
+import { Route } from '@decorators/route.decorator';
 
 @Route(ControllerPrefix.COMMISSION)
 export class CommissionController {

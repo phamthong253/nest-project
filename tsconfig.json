@@ -16,6 +16,12 @@
     "noImplicitAny": true,
     "strictBindCallApply": true,
     "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "paths": {
+      "@config/*": ["src/shared/config/*"],
+      "@decorators/*": ["src/shared/decorators/*"],
+      "@helpers/*": ["src/shared/helpers/*"],
+      "@models/*": ["src/database/models/*"]
+    }
   }
 }
