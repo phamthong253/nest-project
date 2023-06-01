@@ -3,6 +3,7 @@ import { EncryptService } from '../encrypt/encrypt.service';
 import { UserService } from 'src/modules/user/services/user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '@models/user.entity';
+import { CreateUserDto } from 'src/modules/user/dtos/createUser.dto';
 
 @Injectable()
 export class AuthService {
@@ -26,5 +27,9 @@ export class AuthService {
     }
 
     return { accessToken: await this._jwtService.signAsync({ sub: user.id, username: user.username }) };
+  }
+
+  async signUp(createUserDto: CreateUserDto) {
+    return this._userService.create(createUserDto);
   }
 }
