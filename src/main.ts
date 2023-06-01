@@ -12,6 +12,7 @@ async function bootstrap(): Promise<void> {
   const swaggerConfig = new DocumentBuilder()
     .setTitle(configService.get<string>('swagger.title') || 'unknown')
     .setVersion(configService.get<string>('swagger.version') || '1.0')
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, swaggerConfig);
 

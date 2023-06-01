@@ -3,9 +3,11 @@ import { CreateComissionDto } from '../../dtos/createCommission.dto';
 import { UpdateComissionDto } from '../../dtos/updateComission.dto';
 import { CommissionService } from '../../services/commission/commission.service';
 import { ControllerPrefix } from '../../shared/controller-prefix.enum';
+import { ApiBearerAuth } from '@nestjs/swagger';
 import { Commission } from '@models/commission.entity';
 import { Route } from '@decorators/route.decorator';
 
+@ApiBearerAuth()
 @Route(ControllerPrefix.COMMISSION)
 export class CommissionController {
   constructor(private readonly _commissionService: CommissionService) {}

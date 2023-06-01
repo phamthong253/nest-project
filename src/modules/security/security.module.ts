@@ -5,6 +5,7 @@ import { EncryptService } from './services/encrypt/encrypt.service';
 import { AuthController } from './controllers/auth/auth.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
+import { JwtStrategy } from 'src/shared/passport-strategy/jwt.strategy';
 import { UserService } from '../user/services/user/user.service';
 import { RoleService } from './services/role/role.service';
 import { AuthService } from './services/auth/auth.service';
@@ -27,7 +28,7 @@ import { User } from '@models/user.entity';
     }),
   ],
   controllers: [RoleController, PermissionController, AuthController],
-  providers: [PermissionService, RoleService, UserService, EncryptService, AuthService],
+  providers: [PermissionService, RoleService, UserService, EncryptService, AuthService, JwtStrategy],
   exports: [JwtModule],
 })
 export class SecurityModule {}

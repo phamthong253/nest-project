@@ -2,11 +2,12 @@ import { Body, Get, Param, Patch, Post } from '@nestjs/common';
 import { ControllerPrefix } from '../../shared/controller-prefix.enum';
 import { CreateUserDto } from '../../dtos/createUser.dto';
 import { UpdateUserDto } from '../../dtos/updateUset.dto';
+import { ApiBearerAuth } from '@nestjs/swagger';
 import { UserService } from '../../services/user/user.service';
 import { Route } from '@decorators/route.decorator';
 import { User } from '@models/user.entity';
-import { Public } from '@decorators/public-route.decorator';
 
+@ApiBearerAuth()
 @Route(ControllerPrefix.USERS)
 export class UserController {
   constructor(private readonly _userService: UserService) {}

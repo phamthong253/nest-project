@@ -2,8 +2,8 @@ import { ControllerPrefix } from '../../shared/controller-prefix.enum';
 import { AuthService } from '../../services/auth/auth.service';
 import { Body, Post } from '@nestjs/common';
 import { SignInDto } from '../../dtos/signIn.dto';
-import { Route } from '@decorators/route.decorator';
 import { Public } from '@decorators/public-route.decorator';
+import { Route } from '@decorators/route.decorator';
 
 @Route(ControllerPrefix.AUTH)
 export class AuthController {
