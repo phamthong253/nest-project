@@ -3,11 +3,13 @@ import { AuthService } from '../../services/auth/auth.service';
 import { Body, Post } from '@nestjs/common';
 import { SignInDto } from '../../dtos/signIn.dto';
 import { Route } from '@decorators/route.decorator';
+import { Public } from '@decorators/public-route.decorator';
 
 @Route(ControllerPrefix.AUTH)
 export class AuthController {
   constructor(private readonly _authService: AuthService) {}
 
+  @Public()
   @Post()
   signIn(@Body() { username, password }: SignInDto) {
     return this._authService.signIn(username, password);

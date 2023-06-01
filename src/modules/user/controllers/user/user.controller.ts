@@ -5,6 +5,7 @@ import { UpdateUserDto } from '../../dtos/updateUset.dto';
 import { UserService } from '../../services/user/user.service';
 import { Route } from '@decorators/route.decorator';
 import { User } from '@models/user.entity';
+import { Public } from '@decorators/public-route.decorator';
 
 @Route(ControllerPrefix.USERS)
 export class UserController {

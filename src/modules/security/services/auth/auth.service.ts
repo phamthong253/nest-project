@@ -7,13 +7,13 @@ import { User } from '@models/user.entity';
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly _usersService: UserService,
+    private readonly _userService: UserService,
     private readonly _encryptService: EncryptService,
     private readonly _jwtService: JwtService,
   ) {}
 
   async signIn(username: string, pass: string): Promise<any> {
-    const user = (await this._usersService.findBy({ username })) as User | null;
+    const user = (await this._userService.findBy({ username })) as User | null;
 
     if (!user) {
       throw new UnauthorizedException();
