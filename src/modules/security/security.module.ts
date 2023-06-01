@@ -1,10 +1,10 @@
-import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PermissionController } from './controllers/permission/permission.controller';
 import { PermissionService } from './services/permission/permission.service';
 import { RoleController } from './controllers/role/role.controller';
 import { EncryptService } from './services/encrypt/encrypt.service';
 import { AuthController } from './controllers/auth/auth.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigService } from '@nestjs/config';
 import { UserService } from '../user/services/user/user.service';
 import { RoleService } from './services/role/role.service';
 import { AuthService } from './services/auth/auth.service';
@@ -18,7 +18,6 @@ import { User } from '@models/user.entity';
   imports: [
     TypeOrmModule.forFeature([Role, Permission, User]),
     JwtModule.registerAsync({
-      imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         global: true,

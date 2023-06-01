@@ -1,6 +1,6 @@
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { ConfigModule, ConfigService } from '@nestjs/config';
 import { CommissionType } from '@models/comissionType.entity';
+import { ConfigService } from '@nestjs/config';
 import { Commission } from '@models/commission.entity';
 import { Permission } from '@models/permission.entity';
 import { Module } from '@nestjs/common';
@@ -10,7 +10,6 @@ import { Role } from '@models/role.entity';
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService): TypeOrmModuleOptions => ({
         type: configService.get<string>('database.type') as any,
