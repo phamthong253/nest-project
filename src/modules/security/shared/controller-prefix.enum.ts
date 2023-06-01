@@ -1,4 +1,4 @@
 export enum ControllerPrefix {
-  PERMISSIONS = 'permissions',
-  ROLES = 'roles',
+  PERMISSIONS = 'permission',
+  ROLES = 'role',
 }
