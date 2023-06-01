@@ -23,7 +23,7 @@ import { User } from '@models/user.entity';
       useFactory: (configService: ConfigService) => ({
         global: true,
         secret: configService.get<string>('encrypt.secretKey'),
-        signOptions: { expiresIn: `${configService.get<number>('encrypt.secretKeyExpr') ?? 0}s` },
+        signOptions: { expiresIn: configService.get<number>('encrypt.secretKeyExpr') ?? '60s' },
       }),
     }),
   ],
