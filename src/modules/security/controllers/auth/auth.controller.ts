@@ -19,10 +19,12 @@ export class AuthController {
   @Public()
   @Post('sign-up')
   async signUp(@Body() createUserDto: CreateUserDto) {
-    if (!(await this._authService.signUp(createUserDto))) {
+    try {
+      await this._authService.signUp(createUserDto);
+
+      return this._authService.signIn(createUserDto.username, createUserDto.password);
+    } catch (err) {
       throw new BadRequestException();
     }
-
-    return this._authService.signIn(createUserDto.username, createUserDto.password);
   }
 }
