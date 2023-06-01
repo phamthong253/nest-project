@@ -1,6 +1,6 @@
 import { ConfigService } from '@nestjs/config';
 import { Injectable } from '@nestjs/common';
-import { hash } from 'bcrypt';
+import { hash as bHash, compare as bCompare } from 'bcrypt';
 
 @Injectable()
 export class EncryptService {
@@ -10,9 +10,13 @@ export class EncryptService {
     this.saltRounnds = this._configService.get<number>('encrypt.saltRounds') || 10;
   }
 
-  generateHash(str: string): Promise<string> {
+  compare(str: string, hash: string): Promise<boolean> {
+    return bCompare(str, hash);
+  }
+
+  hash(str: string): Promise<string> {
     return new Promise((resolve, reject) => {
-      hash(str, this.saltRounnds, (err, encryptedStr) => {
+      bHash(str, this.saltRounnds, (err, encryptedStr) => {
         if (err) {
           reject(err.message);
         }

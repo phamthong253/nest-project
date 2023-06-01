@@ -17,7 +17,7 @@ export class UserController {
 
   @Get(':id')
   findById(@Param('id') id: string): Promise<User | Omit<User, 'password'> | null> {
-    return this._userService.findById(id, true);
+    return this._userService.findBy({ id }, true);
   }
 
   @Post()

@@ -24,9 +24,9 @@ export class UserService {
     });
   }
 
-  async findById(id: string, omitPassword = false): Promise<User | Omit<User, 'password'> | null> {
+  async findBy(props: Partial<User>, omitPassword = false): Promise<User | Omit<User, 'password'> | null> {
     try {
-      let user: User | Omit<User, 'password'> | null = await this._userRepo.findOneBy({ id, roles: true });
+      let user: User | Omit<User, 'password'> | null = await this._userRepo.findOneBy({ ...props, roles: true });
 
       if (omitPassword && user) {
         const { password, ...others } = user as User;
@@ -44,7 +44,7 @@ export class UserService {
     const user = this._userRepo.create(createUserDto);
     const userRole = await this._roleService.findRoleByName(DefaultRole.USER);
 
-    user.password = await this._encryptService.generateHash(user.password);
+    user.password = await this._encryptService.hash(user.password);
 
     if (userRole) {
       user.roles = [userRole];
