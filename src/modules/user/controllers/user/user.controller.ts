@@ -1,6 +1,7 @@
-import { Body, Get, Post } from '@nestjs/common';
+import { Body, Get, Param, Patch, Post } from '@nestjs/common';
 import { ControllerPrefix } from '../../shared/controller-prefix.enum';
 import { CreateUserDto } from '../../dtos/createUser.dto';
+import { UpdateUserDto } from '../../dtos/updateUset.dto';
 import { UserService } from '../../services/user/user.service';
 import { Route } from '@decorators/route.decorator';
 import { User } from '@models/user.entity';
@@ -14,8 +15,18 @@ export class UserController {
     return this._userService.findAll();
   }
 
+  @Get(':id')
+  findById(@Param('id') id: string): Promise<User | Omit<User, 'password'> | null> {
+    return this._userService.findById(id, true);
+  }
+
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
+  create(@Body() createUserDto: CreateUserDto): Promise<User> {
     return this._userService.create(createUserDto);
+  }
+
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto): Promise<Partial<User>> {
+    return this._userService.update(id, updateUserDto);
   }
 }
