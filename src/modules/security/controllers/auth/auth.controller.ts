@@ -1,10 +1,10 @@
-import { ControllerPrefix } from '../../shared/controller-prefix.enum';
-import { AuthService } from '../../services/auth/auth.service';
 import { BadRequestException, Body, Post } from '@nestjs/common';
+import { ControllerPrefix } from '../../shared/controller-prefix.enum';
+import { CreateUserDto } from 'src/modules/user/dtos/createUser.dto';
+import { AuthService } from '../../services/auth/auth.service';
 import { SignInDto } from '../../dtos/signIn.dto';
 import { Public } from '@decorators/public-route.decorator';
 import { Route } from '@decorators/route.decorator';
-import { CreateUserDto } from 'src/modules/user/dtos/createUser.dto';
 
 @Route(ControllerPrefix.AUTH)
 export class AuthController {
