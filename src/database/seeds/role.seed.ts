@@ -1,4 +1,4 @@
 export const rolesSeed = [
-  { name: 'User', description: 'represent a base user of the system' },
-  { name: 'Admin', description: 'represent an adminitrator of the system' },
+  { name: 'User', description: 'represents a base user of the system' },
+  { name: 'Admin', description: 'represents an adminitrator of the system' },
 ];
