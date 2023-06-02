@@ -20,6 +20,11 @@ export class RoleController {
     return this._roleService.findAll();
   }
 
+  @Get(':id')
+  findOneById(@Param('id') id: string) {
+    return this._roleService.findBy({ id });
+  }
+
   @Post()
   @Required(AppPermission.ROLE_MODIFY)
   create(@Body() createRoleDto: CreateRoleDto): Promise<Role> {

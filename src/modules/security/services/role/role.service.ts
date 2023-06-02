@@ -11,11 +11,15 @@ export class RoleService {
   constructor(@InjectRepository(Role) private readonly _roleRepo: Repository<Role>) {}
 
   async findAll(): Promise<Role[]> {
-    return await this._roleRepo.find({ relations: { permissions: true } });
+    return await this._roleRepo.find();
   }
 
-  async findRoleByName(name: string): Promise<Role | null> {
-    return await this._roleRepo.findOneBy({ name });
+  async findBy(where: Partial<Role>): Promise<Role | null> {
+    try {
+      return await this._roleRepo.findOne({ relations: { permissions: true }, where });
+    } catch (err) {
+      throw new BadRequestException();
+    }
   }
 
   async create(createRoleDto: CreateRoleDto): Promise<Role> {
