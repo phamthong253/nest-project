@@ -5,7 +5,7 @@ import { CreateUserDto } from '../../dtos/createUser.dto';
 import { ObjectHelper } from '@helpers/object.helper';
 import { RoleService } from 'src/modules/security/services/role/role.service';
 import { DefaultRole } from 'src/modules/security/shared/default-role.enum';
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { User } from '@models/user.entity';
 
@@ -19,31 +19,24 @@ export class UserService {
   ) {}
 
   async findAll(): Promise<User[]> {
-    return await this._userRepo.find({
-      relations: { roles: true },
-      select: { username: true, email: true, roles: true },
-    });
+    return await this._userRepo.find({ select: { username: true, email: true, roles: true, id: true } });
   }
 
   async findBy(props: Partial<User>, omitPassword = false): Promise<User | Omit<User, 'password'> | null> {
     try {
-      let user: User | Omit<User, 'password'> | null = await this._userRepo.findOneBy({ ...props, roles: true });
-
-      if (omitPassword && user) {
-        const { password, ...others } = user as User;
-
-        user = others;
-      }
-
-      return user;
+      return await this._userRepo.findOne({
+        relations: { roles: true },
+        select: { username: true, email: true, roles: true, id: true, password: !omitPassword },
+        where: props,
+      });
     } catch (err) {
-      throw new Error('Invalid User Id');
+      throw new BadRequestException();
     }
   }
 
   async create(createUserDto: CreateUserDto): Promise<User> {
     const user = this._userRepo.create(createUserDto);
-    const userRole = await this._roleService.findRoleByName(DefaultRole.USER);
+    const userRole = await this._roleService.findBy({ name: DefaultRole.USER });
 
     user.password = await this._encryptService.hash(user.password);
 
