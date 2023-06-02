@@ -18,6 +18,11 @@ export class UserService {
     private readonly _encryptService: EncryptService,
   ) {}
 
+  /**
+   * Get all users.
+   * @param select The specified selected fields, default for all fields is `true`.
+   * @returns All users from the database with the specfied fields if there are any.
+   */
   async findAll(select?: FindOptionsSelect<User>): Promise<User[]> {
     let _select = { username: true, email: true, id: true, createTime: true, updateTime: true };
 
@@ -28,6 +33,12 @@ export class UserService {
     return await this._userRepo.find({ select: _select, relations: { roles: true }, where: { deleteTime: IsNull() } });
   }
 
+  /**
+   * Finds the user given the condition and select.
+   * @param where The condition to match the user.
+   * @param select The specified selected fields, default for all fields is `true`.
+   * @returns The matching user or `null` if there is not matching user.
+   */
   async findBy(where: Partial<User>, select?: FindOptionsSelect<User>): Promise<User | null> {
     let _select = { username: true, email: true, id: true, createTime: true, updateTime: true };
 
@@ -46,6 +57,11 @@ export class UserService {
     }
   }
 
+  /**
+   * Creates new user.
+   * @param createUserDto a Data Transfer Object used to create new user.
+   * @returns a newly created user.
+   */
   async create(createUserDto: CreateUserDto): Promise<User> {
     const user = this._userRepo.create(createUserDto);
     const userRole = await this._roleService.findBy({ name: DefaultRole.USER });
@@ -60,6 +76,12 @@ export class UserService {
     return await this._userRepo.save(user);
   }
 
+  /**
+   * Updates the exisiting user.
+   * @param id The user's id to be updated
+   * @param updateUserDto  Data Transfer Object used to update existing user information.
+   * @returns The updated user.
+   */
   async update(id: string, updateUserDto: UpdateUserDto): Promise<Partial<User>> {
     if (!(await this._existId(id))) {
       throw new BadRequestException('User is deleted or does not exist.');
@@ -72,6 +94,11 @@ export class UserService {
     });
   }
 
+  /**
+   * Deletes existing user.
+   * @param id The user's id to be deleted.
+   * @returns The deleted user.
+   */
   async delete(id: string): Promise<Partial<User>> {
     if (!(await this._existId(id))) {
       throw new BadRequestException('User is deleted or does not exist.');
@@ -82,6 +109,11 @@ export class UserService {
     return await this._userRepo.save({ id, deleteTime: now, updateTime: now });
   }
 
+  /**
+   * Checks where the given id exisits within the database.
+   * @param id The user's id to be checked
+   * @returns `true` or `false`
+   */
   private _existId(id: string): Promise<boolean> {
     try {
       return this._userRepo.exist({ where: { id, deleteTime: IsNull() } });
