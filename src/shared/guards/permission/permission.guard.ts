@@ -26,9 +26,10 @@ export class PermissionGuard implements CanActivate {
       .getRepository(User)
       .createQueryBuilder('user')
       .select('permission.name', 'permissionName') // Select the permission name
+      .distinctOn(['permission.name'])
       .innerJoin('user.roles', 'role') // Join the Role entity
       .innerJoin('role.permissions', 'permission') // Join the Permission entity
-      .where('user.id = :id', { id: user.userId })
+      .where('user.id = :id AND role.enabled = true', { id: user.userId })
       .getRawMany();
 
     for (const { permissionName } of permissionNames) {
