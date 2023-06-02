@@ -1,11 +1,9 @@
-import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany } from 'typeorm';
+import { TransientEntity } from './shared/transient-entity.entity';
 import { Role } from './role.entity';
 
 @Entity()
-export class User {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
+export class User extends TransientEntity {
   @Column({ type: 'varchar', length: 50, unique: true })
   username: string;
 

@@ -1,10 +1,11 @@
-import { DeepPartial, Repository } from 'typeorm';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { DeepPartial, IsNull, Repository } from 'typeorm';
 import { CommissionTypeService } from '../commission-type/commission-type.service';
 import { CreateComissionDto } from '../../dtos/createCommission.dto';
 import { UpdateComissionDto } from '../../dtos/updateComission.dto';
 import { InjectRepository } from '@nestjs/typeorm';
+import { ObjectHelper } from '@helpers/object.helper';
 import { Commission } from '@models/commission.entity';
-import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class CommissionService {
@@ -16,56 +17,54 @@ export class CommissionService {
 
   async findAll(): Promise<Commission[]> {
     return await this._commissionRepo.find({
+      select: { id: true, name: true, createTime: true, imageSrc: true, price: true },
       relations: { type: true },
+      where: { deleteTime: IsNull() },
     });
   }
 
-  async findById(id: string): Promise<Commission | null> {
-    try {
-      return await this._commissionRepo.findOneBy({ id });
-    } catch (err) {
-      throw new Error('Invalid Commission Id');
-    }
-  }
-
   async create(createCommissionDto: CreateComissionDto): Promise<Commission> {
-    const type = await this._commissionTypeService.findById(createCommissionDto.typeId);
-
-    if (!type) {
-      throw new Error('Invalid Commission Type');
+    if (!this._commissionTypeService.checkId(createCommissionDto.typeId)) {
+      throw new BadRequestException('Commission type is deleted or does not exist');
     }
 
-    const { name, imageSrc, price } = createCommissionDto;
-    const createdTime = Date.now();
-    const commissionParams = { name, imageSrc, price, createdTime, type };
+    const { name, imageSrc, price, typeId } = createCommissionDto;
 
-    return this._commissionRepo.save(this._commissionRepo.create(commissionParams));
+    return await this._commissionRepo.save(
+      this._commissionRepo.create({ name, imageSrc, price, type: { id: typeId } }),
+    );
   }
 
   async update(id: string, updateCommissionDto: UpdateComissionDto): Promise<Commission> {
-    const commission = await this.findById(id);
-
-    if (!commission) {
-      throw new Error('Invalid Commission Id');
+    if (!(await this._existId(id))) {
+      throw new BadRequestException('Commission is deleted or does not exist');
     }
 
-    const { typeId, ...otherProps } = Object.keys(updateCommissionDto).reduce(
-      (acc, key) => (!!(updateCommissionDto as any)[key] ? { ...acc, [key]: (updateCommissionDto as any)[key] } : acc),
-      {} as UpdateComissionDto,
-    );
+    const { typeId, ...otherProps } = ObjectHelper.filterEmptyProps(UpdateComissionDto, updateCommissionDto);
+    const commissionParams: DeepPartial<Commission> = { id, ...otherProps, updateTime: Date.now() };
 
-    const commissionParams: DeepPartial<Commission> = { ...commission, ...otherProps };
-
-    if (typeId) {
-      const type = await this._commissionTypeService.findById(typeId);
-
-      if (!type) {
-        throw new Error('Invalid Commission Type');
-      }
-
-      commissionParams.type = type;
+    if (typeId && (await this._commissionTypeService.checkId(typeId))) {
+      commissionParams.type = { id: typeId };
     }
 
     return this._commissionRepo.save(this._commissionRepo.create(commissionParams));
+  }
+
+  async delete(id: string): Promise<Partial<Commission>> {
+    if (!(await this._existId(id))) {
+      throw new BadRequestException('Commission is deleted or does not exist');
+    }
+
+    const now = Date.now();
+
+    return await this._commissionRepo.save({ id, deleteTime: now, updateTime: now });
+  }
+
+  private _existId(id: string): Promise<boolean> {
+    try {
+      return this._commissionRepo.exist({ where: { id, deleteTime: IsNull() } });
+    } catch (err) {
+      throw new BadRequestException(err.message);
+    }
   }
 }

@@ -1,11 +1,9 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { CommissionType } from './comissionType.entity';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { TransientEntity } from './shared/transient-entity.entity';
+import { CommissionType } from './comission-type.entity';
 
 @Entity()
-export class Commission {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
+export class Commission extends TransientEntity {
   @Column({ type: 'varchar' })
   name: string;
 
@@ -18,7 +16,4 @@ export class Commission {
 
   @Column()
   price: number;
-
-  @Column({ type: 'bigint' })
-  createdTime: number;
 }

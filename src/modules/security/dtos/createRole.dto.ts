@@ -1,6 +1,6 @@
+import { IsArray, IsNotEmpty, IsOptional, IsString, ValidateNested } from 'class-validator';
 import { Permission } from '@models/permission.entity';
 import { Type } from 'class-transformer';
-import { IsArray, IsNotEmpty, IsOptional, IsString, ValidateNested } from 'class-validator';
 
 export class CreateRoleDto {
   @IsNotEmpty()

@@ -1,4 +1,4 @@
-import { Body, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { ControllerPrefix } from '../../shared/controller-prefix.enum';
 import { CreateUserDto } from '../../dtos/createUser.dto';
 import { UpdateUserDto } from '../../dtos/updateUset.dto';
@@ -36,5 +36,11 @@ export class UserController {
   @Required(AppPermission.USER_MODIFY)
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto): Promise<Partial<User>> {
     return this._userService.update(id, updateUserDto);
+  }
+
+  @Delete(':id')
+  @Required(AppPermission.USER_DELETE)
+  delete(@Param('id') id: string): Promise<Partial<User>> {
+    return this._userService.delete(id);
   }
 }

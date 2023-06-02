@@ -1,6 +1,6 @@
 import { CommissionTypeService } from '../../services/commission-type/commission-type.service';
 import { ControllerPrefix } from '../../shared/controller-prefix.enum';
-import { CommissionType } from '@models/comissionType.entity';
+import { CommissionType } from '@models/comission-type.entity';
 import { AppPermission } from 'src/modules/security/shared/permissions.enum';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { Required } from '@decorators/required-permission.decorator';

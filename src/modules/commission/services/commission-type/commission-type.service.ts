@@ -1,7 +1,7 @@
 import { CreateCommissionTypeDto } from '../../dtos/createCommissionType.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CommissionType } from '@models/comissionType.entity';
-import { Injectable } from '@nestjs/common';
+import { CommissionType } from '@models/comission-type.entity';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -19,7 +19,7 @@ export class CommissionTypeService {
     try {
       return await this._commissionTypeRepo.findOneBy({ id });
     } catch (err) {
-      throw new Error('Invalid Commission Type Id');
+      throw new BadRequestException(err.message);
     }
   }
 
@@ -30,5 +30,17 @@ export class CommissionTypeService {
     const type = this._commissionTypeRepo.create(createCommissionTypeDto);
 
     return await this._commissionTypeRepo.save(type);
+  }
+
+  checkId(id: string): Promise<boolean> {
+    return this._existId(id);
+  }
+
+  private async _existId(id: string): Promise<boolean> {
+    try {
+      return await this._commissionTypeRepo.exist({ where: { id } });
+    } catch (err) {
+      throw new BadRequestException(err.message);
+    }
   }
 }

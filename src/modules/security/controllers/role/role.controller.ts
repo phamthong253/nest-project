@@ -1,4 +1,4 @@
-import { Body, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { ControllerPrefix } from '../../shared/controller-prefix.enum';
 import { AppPermission } from '../../shared/permissions.enum';
 import { CreateRoleDto } from '../../dtos/createRole.dto';
@@ -35,5 +35,11 @@ export class RoleController {
   @Required(AppPermission.ROLE_MODIFY)
   update(@Param('id') id: string, @Body() updateRoleDto: UpdateRoleDto): Promise<Partial<Role>> {
     return this._roleService.update(id, updateRoleDto);
+  }
+
+  @Delete(':id')
+  @Required(AppPermission.ROLE_MODIFY)
+  delete(@Param('id') id: string): Promise<Partial<Role>> {
+    return this._roleService.delete(id);
   }
 }
