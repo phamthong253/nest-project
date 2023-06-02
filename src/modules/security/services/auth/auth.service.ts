@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { EncryptService } from '../encrypt/encrypt.service';
 import { UserService } from 'src/modules/user/services/user/user.service';
 import { JwtService } from '@nestjs/jwt';
@@ -29,7 +29,11 @@ export class AuthService {
     return { accessToken: await this._jwtService.signAsync({ sub: user.id, username: user.username }) };
   }
 
-  async signUp(createUserDto: CreateUserDto) {
-    return this._userService.create(createUserDto);
+  async signUp(createUserDto: CreateUserDto): Promise<User> {
+    try {
+      return await this._userService.create(createUserDto);
+    } catch (err) {
+      throw new BadRequestException();
+    }
   }
 }

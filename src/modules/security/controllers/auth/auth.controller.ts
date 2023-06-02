@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Post } from '@nestjs/common';
+import { Body, Post } from '@nestjs/common';
 import { ControllerPrefix } from '../../shared/controller-prefix.enum';
 import { CreateUserDto } from 'src/modules/user/dtos/createUser.dto';
 import { AuthService } from '../../services/auth/auth.service';
@@ -19,12 +19,8 @@ export class AuthController {
   @Public()
   @Post('sign-up')
   async signUp(@Body() createUserDto: CreateUserDto) {
-    try {
-      await this._authService.signUp(createUserDto);
+    await this._authService.signUp(createUserDto);
 
-      return this._authService.signIn(createUserDto.username, createUserDto.password);
-    } catch (err) {
-      throw new BadRequestException();
-    }
+    return this._authService.signIn(createUserDto.username, createUserDto.password);
   }
 }
