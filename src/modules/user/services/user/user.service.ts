@@ -2,6 +2,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { EncryptService } from 'src/modules/security/services/encrypt/encrypt.service';
 import { UpdateUserDto } from '../../dtos/updateUset.dto';
 import { CreateUserDto } from '../../dtos/createUser.dto';
+import { ObjectHelper } from '@helpers/object.helper';
 import { RoleService } from 'src/modules/security/services/role/role.service';
 import { DefaultRole } from 'src/modules/security/shared/default-role.enum';
 import { Injectable } from '@nestjs/common';
@@ -56,18 +57,6 @@ export class UserService {
   }
 
   async update(id: string, updateUserDto: UpdateUserDto): Promise<Partial<User>> {
-    const filteredDto = Object.keys(updateUserDto).reduce((acc, key) => {
-      const val = (updateUserDto as Record<string, any>)[key];
-      const isArray = typeof val === 'object' && 'length' in val;
-      const isNotNull = val !== undefined;
-
-      if (isNotNull || (isArray && val.length)) {
-        (acc as Record<string, any>)[key] = val;
-      }
-
-      return acc;
-    }, new UpdateUserDto());
-
-    return this._userRepo.save({ id, ...filteredDto });
+    return this._userRepo.save({ id, ...ObjectHelper.filterEmptyProps(UpdateUserDto, updateUserDto) });
   }
 }
