@@ -22,7 +22,7 @@ export class UserController {
 
   @Get(':id')
   @Required(AppPermission.USER_READ)
-  findById(@Param('id') id: string): Promise<User | Omit<User, 'password'> | null> {
+  findById(@Param('id') id: string): Promise<User | null> {
     return this._userService.findBy({ id }, true);
   }
 

@@ -22,7 +22,7 @@ export class UserService {
     return await this._userRepo.find({ select: { username: true, email: true, roles: true, id: true } });
   }
 
-  async findBy(props: Partial<User>, omitPassword = false): Promise<User | Omit<User, 'password'> | null> {
+  async findBy(props: Partial<User>, omitPassword = false): Promise<User | null> {
     try {
       return await this._userRepo.findOne({
         relations: { roles: true },
