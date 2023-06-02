@@ -20,4 +20,7 @@ export const permissionsSeed: Omit<Permission, 'id'>[] = [
   { name: 'role.read', description: 'Allows user to access role information' },
   { name: 'role.modify', description: 'Allows user to modify (create/update) role resource' },
   { name: 'role.delete', description: 'Allows user to remove role resource' },
+
+  // Permission
+  { name: 'permission.read', description: 'Allows user to access permission information' },
 ];
