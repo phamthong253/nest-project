@@ -42,7 +42,7 @@ export class UserService {
         where: { ...where, deleteTime: IsNull() },
       });
     } catch (err) {
-      throw new InternalServerErrorException(err.err);
+      throw new BadRequestException(err.message);
     }
   }
 
