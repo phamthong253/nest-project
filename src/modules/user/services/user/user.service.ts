@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
-import { IsNull, Repository } from 'typeorm';
+import { FindOptionsSelect, IsNull, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EncryptService } from 'src/modules/security/services/encrypt/encrypt.service';
 import { UpdateUserDto } from '../../dtos/updateUset.dto';
@@ -18,19 +18,27 @@ export class UserService {
     private readonly _encryptService: EncryptService,
   ) {}
 
-  async findAll(): Promise<User[]> {
-    const select = { username: true, email: true, roles: true, id: true, createTime: true, updateTime: true };
+  async findAll(select?: FindOptionsSelect<User>): Promise<User[]> {
+    let _select = { username: true, email: true, id: true, createTime: true, updateTime: true };
 
-    return await this._userRepo.find({ select, where: { deleteTime: IsNull() } });
+    if (select) {
+      _select = { ..._select, ...select };
+    }
+
+    return await this._userRepo.find({ select: _select, relations: { roles: true }, where: { deleteTime: IsNull() } });
   }
 
-  async findBy(where: Partial<User>, omitPassword = false): Promise<User | null> {
-    const select = { username: true, email: true, roles: true, id: true, createTime: true, updateTime: true };
+  async findBy(where: Partial<User>, select?: FindOptionsSelect<User>): Promise<User | null> {
+    let _select = { username: true, email: true, id: true, createTime: true, updateTime: true };
+
+    if (select) {
+      _select = { ..._select, ...select };
+    }
 
     try {
       return await this._userRepo.findOne({
         relations: { roles: true },
-        select: { ...select, password: !omitPassword },
+        select: _select,
         where: { ...where, deleteTime: IsNull() },
       });
     } catch (err) {

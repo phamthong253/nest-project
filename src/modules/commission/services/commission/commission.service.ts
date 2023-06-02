@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { DeepPartial, IsNull, Repository } from 'typeorm';
+import { DeepPartial, FindOptionsSelect, IsNull, Repository } from 'typeorm';
 import { CommissionTypeService } from '../commission-type/commission-type.service';
 import { CreateComissionDto } from '../../dtos/createCommission.dto';
 import { UpdateComissionDto } from '../../dtos/updateComission.dto';
@@ -15,9 +15,15 @@ export class CommissionService {
     private readonly _commissionTypeService: CommissionTypeService,
   ) {}
 
-  async findAll(): Promise<Commission[]> {
+  async findAll(select?: FindOptionsSelect<Commission>): Promise<Commission[]> {
+    let _select = { id: true, name: true, createTime: true, imageSrc: true, price: true };
+
+    if (select) {
+      _select = { ..._select, ...select };
+    }
+
     return await this._commissionRepo.find({
-      select: { id: true, name: true, createTime: true, imageSrc: true, price: true },
+      select: _select,
       relations: { type: true },
       where: { deleteTime: IsNull() },
     });

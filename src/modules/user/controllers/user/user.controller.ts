@@ -17,13 +17,13 @@ export class UserController {
   @Get()
   @Required(AppPermission.USER_READ)
   findAll(): Promise<User[]> {
-    return this._userService.findAll();
+    return this._userService.findAll({ roles: { id: true, name: true, enabled: true } });
   }
 
   @Get(':id')
   @Required(AppPermission.USER_READ)
   findById(@Param('id') id: string): Promise<User | null> {
-    return this._userService.findBy({ id }, true);
+    return this._userService.findBy({ id }, { password: false, roles: { id: true, name: true, enabled: true } });
   }
 
   @Post()

@@ -17,7 +17,7 @@ export class CommissionController {
   @Get()
   @Required(AppPermission.COMMISSION_READ)
   getAll(): Promise<Commission[]> {
-    return this._commissionService.findAll();
+    return this._commissionService.findAll({ type: { id: true, name: true } });
   }
 
   @Post()
