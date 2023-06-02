@@ -30,12 +30,12 @@ export class PermissionGuard implements CanActivate {
       .innerJoin('user.roles', 'role') // Join the Role entity
       .innerJoin('role.permissions', 'permission') // Join the Permission entity
       .where('user.id = :id AND role.enabled = true', { id: user.userId })
-      .getRawMany();
+      .getRawMany<{ permissionName: AppPermission }>();
 
     for (const { permissionName } of permissionNames) {
       permissionNameList.push(permissionName);
     }
 
-    return permissionNameList.some((permission) => perrmissionSet.has(permission));
+    return permissionNameList.some((permission: AppPermission): boolean => perrmissionSet.has(permission));
   }
 }
