@@ -2,8 +2,8 @@ import { BadRequestException, Injectable, InternalServerErrorException } from '@
 import { FindOptionsSelect, FindOptionsWhere, IsNull, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EncryptService } from 'src/modules/security/services/encrypt/encrypt.service';
-import { UpdateUserDto } from '../../dtos/updateUset.dto';
-import { CreateUserDto } from '../../dtos/createUser.dto';
+import { UpdateUserDto } from '../../dtos/update-user.dto';
+import { CreateUserDto } from '../../dtos/create-user.dto';
 import { ObjectHelper } from '@helpers/object.helper';
 import { RoleService } from 'src/modules/security/services/role/role.service';
 import { DefaultRole } from 'src/modules/security/shared/default-role.enum';

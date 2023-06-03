@@ -1,6 +1,6 @@
 import { Body, Delete, Get, Param, Patch, Post } from '@nestjs/common';
-import { CreateComissionDto } from '../../dtos/createCommission.dto';
-import { UpdateComissionDto } from '../../dtos/updateComission.dto';
+import { CreateComissionDto } from '../../dtos/create-commission.dto';
+import { UpdateComissionDto } from '../../dtos/update-comission.dto';
 import { CommissionService } from '../../services/commission/commission.service';
 import { ControllerPrefix } from '../../shared/controller-prefix.enum';
 import { AppPermission } from 'src/modules/security/shared/permissions.enum';

@@ -1,8 +1,8 @@
 import { DeepPartial, FindOptionsSelect, IsNull, Repository } from 'typeorm';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { CommissionTypeService } from '../commission-type/commission-type.service';
-import { CreateComissionDto } from '../../dtos/createCommission.dto';
-import { UpdateComissionDto } from '../../dtos/updateComission.dto';
+import { CreateComissionDto } from '../../dtos/create-commission.dto';
+import { UpdateComissionDto } from '../../dtos/update-comission.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ObjectHelper } from '@helpers/object.helper';
 import { Commission } from '@models/commission.entity';

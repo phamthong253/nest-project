@@ -1,8 +1,8 @@
 import { Body, Post } from '@nestjs/common';
 import { ControllerPrefix } from '../../shared/controller-prefix.enum';
-import { CreateUserDto } from 'src/modules/user/dtos/createUser.dto';
+import { CreateUserDto } from 'src/modules/user/dtos/create-user.dto';
 import { AuthService } from '../../services/auth/auth.service';
-import { SignInDto } from '../../dtos/signIn.dto';
+import { SignInDto } from '../../dtos/sign-in.dto';
 import { Public } from '@decorators/public-route.decorator';
 import { Route } from '@decorators/route.decorator';
 

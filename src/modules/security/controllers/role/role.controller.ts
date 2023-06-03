@@ -1,8 +1,8 @@
 import { Body, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { ControllerPrefix } from '../../shared/controller-prefix.enum';
 import { AppPermission } from '../../shared/permissions.enum';
-import { CreateRoleDto } from '../../dtos/createRole.dto';
-import { UpdateRoleDto } from '../../dtos/updateRole.dto';
+import { CreateRoleDto } from '../../dtos/create-role.dto';
+import { UpdateRoleDto } from '../../dtos/update-role.dto';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { RoleService } from '../../services/role/role.service';
 import { Required } from '@decorators/required-permission.decorator';

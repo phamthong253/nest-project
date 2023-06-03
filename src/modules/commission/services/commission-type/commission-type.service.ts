@@ -1,4 +1,4 @@
-import { CreateCommissionTypeDto } from '../../dtos/createCommissionType.dto';
+import { CreateCommissionTypeDto } from '../../dtos/create-commission-type.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CommissionType } from '@models/comission-type.entity';
 import { BadRequestException, Injectable } from '@nestjs/common';

@@ -1,8 +1,8 @@
 import { FindOptionsSelect, FindOptionsWhere, IsNull, Repository } from 'typeorm';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UpdateRoleDto } from '../../dtos/updateRole.dto';
-import { CreateRoleDto } from '../../dtos/createRole.dto';
+import { UpdateRoleDto } from '../../dtos/update-role.dto';
+import { CreateRoleDto } from '../../dtos/create-role.dto';
 import { ObjectHelper } from '@helpers/object.helper';
 import { Role } from '@models/role.entity';
 
