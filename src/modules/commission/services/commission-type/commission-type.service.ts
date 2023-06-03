@@ -1,8 +1,9 @@
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateCommissionTypeDto } from '../../dtos/create-commission-type.dto';
+import { UpdateCommissionTypeDto } from '../../dtos/update-commission-type.dto';
+import { IsNull, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CommissionType } from '@models/commission-type.entity';
-import { BadRequestException, Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
 
 @Injectable()
 export class CommissionTypeService {
@@ -12,15 +13,10 @@ export class CommissionTypeService {
   ) {}
 
   async findAll(): Promise<CommissionType[]> {
-    return await this._commissionTypeRepo.find();
-  }
-
-  async findById(id: string): Promise<CommissionType | null> {
-    try {
-      return await this._commissionTypeRepo.findOneBy({ id });
-    } catch (err) {
-      throw new BadRequestException(err.message);
-    }
+    return await this._commissionTypeRepo.find({
+      select: { id: true, createTime: true, updateTime: true, name: true },
+      where: { deleteTime: IsNull() },
+    });
   }
 
   /**
@@ -32,13 +28,31 @@ export class CommissionTypeService {
     return await this._commissionTypeRepo.save(type);
   }
 
+  async update(id: string, updateCommissionTypeDto: UpdateCommissionTypeDto): Promise<Partial<CommissionType>> {
+    if (!(await this._existId(id))) {
+      throw new BadRequestException('Commission type is deleted or does not exist.');
+    }
+
+    return this._commissionTypeRepo.save({ id, ...updateCommissionTypeDto, updateTime: Date.now() });
+  }
+
+  async delete(id: string): Promise<Partial<CommissionType>> {
+    if (!(await this._existId(id))) {
+      throw new BadRequestException('Commission type is deleted or does not exist.');
+    }
+
+    const now = Date.now();
+
+    return this._commissionTypeRepo.save({ id, deleteTime: now, updateTime: now });
+  }
+
   checkId(id: string): Promise<boolean> {
     return this._existId(id);
   }
 
   private async _existId(id: string): Promise<boolean> {
     try {
-      return await this._commissionTypeRepo.exist({ where: { id } });
+      return await this._commissionTypeRepo.exist({ where: { id, deleteTime: IsNull() } });
     } catch (err) {
       throw new BadRequestException(err.message);
     }
