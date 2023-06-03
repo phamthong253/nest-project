@@ -4,10 +4,10 @@ import { hash as bHash, compare as bCompare } from 'bcrypt';
 
 @Injectable()
 export class EncryptService {
-  private readonly saltRounnds: number;
+  private readonly saltRounds: number;
 
   constructor(private readonly _configService: ConfigService) {
-    this.saltRounnds = this._configService.get<number>('encrypt.saltRounds') || 10;
+    this.saltRounds = this._configService.get<number>('encrypt.saltRounds') || 10;
   }
 
   compare(str: string, hash: string): Promise<boolean> {
@@ -16,7 +16,7 @@ export class EncryptService {
 
   hash(str: string): Promise<string> {
     return new Promise((resolve, reject) => {
-      bHash(str, this.saltRounnds, (err, encryptedStr) => {
+      bHash(str, this.saltRounds, (err, encryptedStr) => {
         if (err) {
           reject(err.message);
         }

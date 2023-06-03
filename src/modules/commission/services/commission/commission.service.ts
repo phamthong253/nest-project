@@ -1,7 +1,7 @@
 import { DeepPartial, FindOptionsSelect, IsNull, Repository } from 'typeorm';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { CommissionTypeService } from '../commission-type/commission-type.service';
-import { CreateComissionDto } from '../../dtos/create-commission.dto';
+import { CreateCommissionDto } from '../../dtos/create-commission.dto';
 import { UpdateCommissionDto } from '../../dtos/update-commission.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ObjectHelper } from '@helpers/object.helper';
@@ -29,7 +29,7 @@ export class CommissionService {
     });
   }
 
-  async create(createCommissionDto: CreateComissionDto): Promise<Commission> {
+  async create(createCommissionDto: CreateCommissionDto): Promise<Commission> {
     if (!this._commissionTypeService.checkId(createCommissionDto.typeId)) {
       throw new BadRequestException('Commission type is deleted or does not exist');
     }

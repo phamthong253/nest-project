@@ -21,7 +21,7 @@ export class UserService {
   /**
    * Get all users.
    * @param select The specified selected fields, default for all fields is `true`.
-   * @returns All users from the database with the specfied fields if there are any.
+   * @returns All users from the database with the specified fields if there are any.
    */
   async findAll(select?: FindOptionsSelect<User>): Promise<User[]> {
     let _select = { username: true, email: true, id: true, createTime: true, updateTime: true };
@@ -77,7 +77,7 @@ export class UserService {
   }
 
   /**
-   * Updates the exisiting user.
+   * Updates the existing user.
    * @param id The user's id to be updated
    * @param updateUserDto  Data Transfer Object used to update existing user information.
    * @returns The updated user.
@@ -110,7 +110,7 @@ export class UserService {
   }
 
   /**
-   * Checks whether the given id exisits within the database.
+   * Checks whether the given id exists within the database.
    * @param id The user's id to be checked
    * @returns `true` or `false`
    */

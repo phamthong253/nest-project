@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
-export class CreateComissionDto {
+export class CreateCommissionDto {
   @IsNotEmpty()
   @IsString()
   name: string;

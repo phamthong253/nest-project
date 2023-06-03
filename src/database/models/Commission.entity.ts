@@ -1,6 +1,6 @@
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { TransientEntity } from './shared/transient-entity.entity';
-import { CommissionType } from './comission-type.entity';
+import { CommissionType } from './commission-type.entity';
 
 @Entity()
 export class Commission extends TransientEntity {

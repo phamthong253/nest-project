@@ -10,11 +10,11 @@ import { AppPermission } from '../../shared/permissions.enum';
 @ApiBearerAuth()
 @Route(ControllerPrefix.PERMISSIONS)
 export class PermissionController {
-  constructor(private readonly _permisionService: PermissionService) {}
+  constructor(private readonly _permissionService: PermissionService) {}
 
   @Get()
   @Required(AppPermission.PERMISSION_READ)
   findAll(): Promise<Permission[]> {
-    return this._permisionService.findAll();
+    return this._permissionService.findAll();
   }
 }
