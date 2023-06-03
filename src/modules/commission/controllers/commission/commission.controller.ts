@@ -1,6 +1,6 @@
 import { Body, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { CreateComissionDto } from '../../dtos/create-commission.dto';
-import { UpdateComissionDto } from '../../dtos/update-commission.dto';
+import { UpdateCommissionDto } from '../../dtos/update-commission.dto';
 import { CommissionService } from '../../services/commission/commission.service';
 import { ControllerPrefix } from '../../shared/controller-prefix.enum';
 import { AppPermission } from 'src/modules/security/shared/permissions.enum';
@@ -28,7 +28,7 @@ export class CommissionController {
 
   @Patch(':id')
   @Required(AppPermission.COMMISSION_MODIFY)
-  update(@Param('id') id: string, @Body() updateCommissionDto: UpdateComissionDto): Promise<Commission> {
+  update(@Param('id') id: string, @Body() updateCommissionDto: UpdateCommissionDto): Promise<Commission> {
     return this._commissionService.update(id, updateCommissionDto);
   }
 
