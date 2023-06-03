@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
-import { FindOptionsSelect, IsNull, Repository } from 'typeorm';
+import { FindOptionsSelect, FindOptionsWhere, IsNull, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EncryptService } from 'src/modules/security/services/encrypt/encrypt.service';
 import { UpdateUserDto } from '../../dtos/updateUset.dto';
@@ -39,7 +39,7 @@ export class UserService {
    * @param select The specified selected fields, default for all fields is `true`.
    * @returns The matching user or `null` if there is not matching user.
    */
-  async findBy(where: Partial<User>, select?: FindOptionsSelect<User>): Promise<User | null> {
+  async findBy(where: FindOptionsWhere<User>, select?: FindOptionsSelect<User>): Promise<User | null> {
     let _select = { username: true, email: true, id: true, createTime: true, updateTime: true };
 
     if (select) {
@@ -110,7 +110,7 @@ export class UserService {
   }
 
   /**
-   * Checks where the given id exisits within the database.
+   * Checks whether the given id exisits within the database.
    * @param id The user's id to be checked
    * @returns `true` or `false`
    */

@@ -1,5 +1,5 @@
+import { FindOptionsSelect, FindOptionsWhere, IsNull, Repository } from 'typeorm';
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { IsNull, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UpdateRoleDto } from '../../dtos/updateRole.dto';
 import { CreateRoleDto } from '../../dtos/createRole.dto';
@@ -10,18 +10,26 @@ import { Role } from '@models/role.entity';
 export class RoleService {
   constructor(@InjectRepository(Role) private readonly _roleRepo: Repository<Role>) {}
 
-  async findAll(): Promise<Role[]> {
-    const select = { id: true, name: true, createTime: true, deleteTime: true, description: true, enabled: true };
+  async findAll(select?: FindOptionsSelect<Role>): Promise<Role[]> {
+    let _select = { id: true, name: true, createTime: true, updateTime: true, description: true, enabled: true };
 
-    return await this._roleRepo.find({ select, where: { deleteTime: IsNull() } });
+    if (select) {
+      _select = { ..._select, ...select };
+    }
+
+    return await this._roleRepo.find({ select: _select, where: { deleteTime: IsNull() } });
   }
 
-  async findBy(where: Partial<Role>): Promise<Role | null> {
-    const select = { id: true, name: true, createTime: true, deleteTime: true, description: true, enabled: true };
+  async findBy(where: FindOptionsWhere<Role>, select?: FindOptionsSelect<Role>): Promise<Role | null> {
+    let _select = { id: true, name: true, createTime: true, updateTime: true, description: true, enabled: true };
+
+    if (select) {
+      _select = { ..._select, ...select };
+    }
 
     try {
       return await this._roleRepo.findOne({
-        select,
+        select: _select,
         relations: { permissions: true },
         where: { ...where, deleteTime: IsNull() },
       });
