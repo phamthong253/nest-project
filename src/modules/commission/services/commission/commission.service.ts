@@ -36,9 +36,7 @@ export class CommissionService {
 
     const { name, imageSrc, price, typeId } = createCommissionDto;
 
-    return await this._commissionRepo.save(
-      this._commissionRepo.create({ name, imageSrc, price, type: { id: typeId } }),
-    );
+    return await this._commissionRepo.save(this._commissionRepo.create({ name, imageSrc, price, type: { id: typeId } }));
   }
 
   async update(id: string, updateCommissionDto: UpdateCommissionDto): Promise<Commission> {

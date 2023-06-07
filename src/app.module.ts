@@ -10,13 +10,7 @@ import { JwtAuthGuard } from './shared/guards/auth/auth.guard';
 import { PermissionGuard } from './shared/guards/permission/permission.guard';
 
 @Module({
-  imports: [
-    ConfigModule.forRoot({ load: appConfigs, isGlobal: true }),
-    DatabaseModule,
-    CommissionModule,
-    UserModule,
-    SecurityModule,
-  ],
+  imports: [ConfigModule.forRoot({ load: appConfigs, isGlobal: true }), DatabaseModule, CommissionModule, UserModule, SecurityModule],
   providers: [
     { provide: APP_GUARD, useClass: JwtAuthGuard },
     { provide: APP_GUARD, useClass: PermissionGuard },
