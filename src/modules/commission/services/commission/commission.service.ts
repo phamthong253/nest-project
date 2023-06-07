@@ -29,23 +29,26 @@ export class CommissionService {
     });
   }
 
-  async create(createCommissionDto: CreateCommissionDto): Promise<Commission> {
+  async create(createCommissionDto: CreateCommissionDto, userId: string): Promise<Commission> {
     if (!this._commissionTypeService.checkId(createCommissionDto.typeId)) {
       throw new BadRequestException('Commission type is deleted or does not exist');
     }
 
     const { name, imageSrc, price, typeId } = createCommissionDto;
+    const modifyUser = { id: userId };
 
-    return await this._commissionRepo.save(this._commissionRepo.create({ name, imageSrc, price, type: { id: typeId } }));
+    return await this._commissionRepo.save(
+      this._commissionRepo.create({ name, imageSrc, price, type: { id: typeId }, createdBy: modifyUser, updatedBy: modifyUser }),
+    );
   }
 
-  async update(id: string, updateCommissionDto: UpdateCommissionDto): Promise<Commission> {
+  async update(id: string, updateCommissionDto: UpdateCommissionDto, userId: string): Promise<Commission> {
     if (!(await this._existId(id))) {
       throw new BadRequestException('Commission is deleted or does not exist');
     }
 
     const { typeId, ...otherProps } = ObjectHelper.filterEmptyProps(UpdateCommissionDto, updateCommissionDto);
-    const commissionParams: DeepPartial<Commission> = { id, ...otherProps, updateTime: Date.now() };
+    const commissionParams: DeepPartial<Commission> = { id, ...otherProps, updateTime: Date.now(), updatedBy: { id: userId } };
 
     if (typeId && (await this._commissionTypeService.checkId(typeId))) {
       commissionParams.type = { id: typeId };
@@ -54,14 +57,15 @@ export class CommissionService {
     return this._commissionRepo.save(this._commissionRepo.create(commissionParams));
   }
 
-  async delete(id: string): Promise<Partial<Commission>> {
+  async delete(id: string, userId: string): Promise<Partial<Commission>> {
     if (!(await this._existId(id))) {
       throw new BadRequestException('Commission is deleted or does not exist');
     }
 
+    const modifyUser = { id: userId };
     const now = Date.now();
 
-    return await this._commissionRepo.save({ id, deleteTime: now, updateTime: now });
+    return await this._commissionRepo.save({ id, deleteTime: now, updateTime: now, deletedBy: modifyUser, updatedBy: modifyUser });
   }
 
   private _existId(id: string): Promise<boolean> {

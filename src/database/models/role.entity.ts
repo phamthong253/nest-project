@@ -1,6 +1,7 @@
-import { Column, Entity, JoinTable, ManyToMany } from 'typeorm';
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne } from 'typeorm';
 import { TransientEntity } from './shared/transient-entity';
 import { Permission } from './permission.entity';
+import { User } from './user.entity';
 
 @Entity()
 export class Role extends TransientEntity {
@@ -12,6 +13,18 @@ export class Role extends TransientEntity {
 
   @Column({ type: 'boolean', default: true })
   enabled: boolean;
+
+  @ManyToOne(() => User, (user) => user.id)
+  @JoinColumn()
+  createdBy: User;
+
+  @ManyToOne(() => User, (user) => user.id)
+  @JoinColumn()
+  updatedBy: User;
+
+  @ManyToOne(() => User, (user) => user.id)
+  @JoinColumn()
+  deletedBy: User;
 
   @ManyToMany(() => Permission)
   @JoinTable()

@@ -38,13 +38,14 @@ export class RoleService {
     }
   }
 
-  async create(createRoleDto: CreateRoleDto): Promise<Role> {
+  async create(createRoleDto: CreateRoleDto, userId: string): Promise<Role> {
     const role = this._roleRepo.create(createRoleDto);
+    const modifyUser = { id: userId };
 
-    return await this._roleRepo.save(role);
+    return await this._roleRepo.save({ ...role, updatedBy: modifyUser, createdBy: modifyUser });
   }
 
-  async update(id: string, updateRoleDto: UpdateRoleDto): Promise<Partial<Role>> {
+  async update(id: string, updateRoleDto: UpdateRoleDto, userId: string): Promise<Partial<Role>> {
     if (!(await this._existId(id))) {
       throw new BadRequestException('Role is deleted or does not exist.');
     }
@@ -53,17 +54,19 @@ export class RoleService {
       id,
       ...ObjectHelper.filterEmptyProps(UpdateRoleDto, updateRoleDto),
       updateTime: Date.now(),
+      updatedBy: { id: userId },
     });
   }
 
-  async delete(id: string): Promise<Partial<Role>> {
+  async delete(id: string, userId: string): Promise<Partial<Role>> {
     if (!(await this._existId(id))) {
       throw new BadRequestException('Role is deleted or does not exist.');
     }
 
     const now = Date.now();
+    const modifyUser = { id: userId };
 
-    return await this._roleRepo.save({ id, deleteTime: now, updateTime: now });
+    return await this._roleRepo.save({ id, deleteTime: now, updateTime: now, updatedBy: modifyUser, deletedBy: modifyUser });
   }
 
   private _existId(id: string): Promise<boolean> {

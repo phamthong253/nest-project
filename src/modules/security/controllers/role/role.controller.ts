@@ -1,5 +1,6 @@
-import { Body, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Delete, Get, Param, Patch, Post, Req } from '@nestjs/common';
 import { ControllerPrefix } from '../../shared/controller-prefix.enum';
+import { UtilityRequest } from 'src/shared/utility.type';
 import { AppPermission } from '../../shared/permissions.enum';
 import { CreateRoleDto } from '../../dtos/create-role.dto';
 import { UpdateRoleDto } from '../../dtos/update-role.dto';
@@ -27,19 +28,19 @@ export class RoleController {
 
   @Post()
   @Required(AppPermission.ROLE_MODIFY)
-  create(@Body() createRoleDto: CreateRoleDto): Promise<Role> {
-    return this._roleService.create(createRoleDto);
+  create(@Body() createRoleDto: CreateRoleDto, @Req() { user }: UtilityRequest): Promise<Role> {
+    return this._roleService.create(createRoleDto, user.id);
   }
 
   @Patch(':id')
   @Required(AppPermission.ROLE_MODIFY)
-  update(@Param('id') id: string, @Body() updateRoleDto: UpdateRoleDto): Promise<Partial<Role>> {
-    return this._roleService.update(id, updateRoleDto);
+  update(@Param('id') id: string, @Body() updateRoleDto: UpdateRoleDto, @Req() { user }: UtilityRequest): Promise<Partial<Role>> {
+    return this._roleService.update(id, updateRoleDto, user.id);
   }
 
   @Delete(':id')
   @Required(AppPermission.ROLE_MODIFY)
-  delete(@Param('id') id: string): Promise<Partial<Role>> {
-    return this._roleService.delete(id);
+  delete(@Param('id') id: string, @Req() { user }: UtilityRequest): Promise<Partial<Role>> {
+    return this._roleService.delete(id, user.id);
   }
 }
