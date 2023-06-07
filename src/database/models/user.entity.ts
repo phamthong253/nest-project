@@ -1,5 +1,5 @@
 import { Column, Entity, JoinTable, ManyToMany } from 'typeorm';
-import { TransientEntity } from './shared/transient-entity.entity';
+import { TransientEntity } from './shared/transient-entity';
 import { Role } from './role.entity';
 
 @Entity()

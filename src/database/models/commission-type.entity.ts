@@ -1,5 +1,5 @@
 import { Column, Entity } from 'typeorm';
-import { TransientEntity } from './shared/transient-entity.entity';
+import { TransientEntity } from './shared/transient-entity';
 
 @Entity()
 export class CommissionType extends TransientEntity {

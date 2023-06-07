@@ -1,7 +1,6 @@
 import { Column, Entity, JoinTable, ManyToMany } from 'typeorm';
-import { TransientEntity } from './shared/transient-entity.entity';
+import { TransientEntity } from './shared/transient-entity';
 import { Permission } from './permission.entity';
-import { User } from './user.entity';
 
 @Entity()
 export class Role extends TransientEntity {
@@ -17,8 +16,4 @@ export class Role extends TransientEntity {
   @ManyToMany(() => Permission)
   @JoinTable()
   permissions: Permission[];
-
-  @ManyToMany(() => User)
-  @JoinTable()
-  users: User[];
 }
