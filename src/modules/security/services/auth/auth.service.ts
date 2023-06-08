@@ -1,9 +1,10 @@
 import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { EncryptService } from '../encrypt/encrypt.service';
+import { CreateUserDto } from 'src/modules/user/dtos/create-user.dto';
 import { UserService } from 'src/modules/user/services/user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '@models/user.entity';
-import { CreateUserDto } from 'src/modules/user/dtos/create-user.dto';
+import { SignInResDto } from '../../dtos/sign-in-res.dto';
 
 @Injectable()
 export class AuthService {
@@ -26,7 +27,7 @@ export class AuthService {
       throw new UnauthorizedException();
     }
 
-    return { accessToken: await this._jwtService.signAsync({ sub: user.id, username: user.username }) };
+    return new SignInResDto({ accessToken: await this._jwtService.signAsync({ sub: user.id, username: user.username }) });
   }
 
   async signUp(createUserDto: CreateUserDto): Promise<User> {
