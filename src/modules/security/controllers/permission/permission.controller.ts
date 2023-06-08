@@ -17,6 +17,7 @@ export class PermissionController {
   findAll(): Promise<string[]> {
     return this._permissionService.findAll();
   }
+
   @Get('current-user')
   getUserPermission(@Req() { user }: UtilityRequest): Promise<string[]> {
     return this._permissionService.findByUserId(user.userId);
