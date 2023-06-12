@@ -18,13 +18,13 @@ export class AuthService {
     const user = (await this._userService.findBy({ username }, { password: true })) as User | null;
 
     if (!user) {
-      throw new UnauthorizedException();
+      throw new BadRequestException('username does not exist.');
     }
 
     const isMatched = await this._encryptService.compare(pass, user.password);
 
     if (!isMatched) {
-      throw new UnauthorizedException();
+      throw new BadRequestException('Wrong password.');
     }
 
     return new SignInResDto({ accessToken: await this._jwtService.signAsync({ sub: user.id, username: user.username }) });
@@ -34,7 +34,7 @@ export class AuthService {
     try {
       return await this._userService.create(createUserDto);
     } catch (err) {
-      throw new BadRequestException();
+      throw new BadRequestException(err.message);
     }
   }
 }
