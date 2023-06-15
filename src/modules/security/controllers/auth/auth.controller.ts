@@ -1,8 +1,8 @@
+import { Body, Get, Post, Query } from '@nestjs/common';
 import { ControllerPrefix } from '../../shared/controller-prefix.enum';
 import { CreateUserDto } from 'src/modules/user/dtos/create-user.dto';
 import { SignInResDto } from '../../dtos/sign-in-res.dto';
 import { AuthService } from '../../services/auth/auth.service';
-import { Body, Post } from '@nestjs/common';
 import { SignInDto } from '../../dtos/sign-in.dto';
 import { Public } from '@decorators/public-route.decorator';
 import { Route } from '@decorators/route.decorator';
@@ -10,6 +10,12 @@ import { Route } from '@decorators/route.decorator';
 @Route(ControllerPrefix.AUTH)
 export class AuthController {
   constructor(private readonly _authService: AuthService) {}
+
+  @Public()
+  @Get('exist')
+  existUser(@Query() user: Record<string, any>): Promise<boolean> {
+    return this._authService.checkUser(user as any);
+  }
 
   @Public()
   @Post('sign-in')

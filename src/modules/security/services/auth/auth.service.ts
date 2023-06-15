@@ -5,6 +5,7 @@ import { SignInResDto } from '../../dtos/sign-in-res.dto';
 import { UserService } from 'src/modules/user/services/user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '@models/user.entity';
+import { ObjectHelper } from '@helpers/object.helper';
 
 @Injectable()
 export class AuthService {
@@ -13,6 +14,10 @@ export class AuthService {
     private readonly _encryptService: EncryptService,
     private readonly _jwtService: JwtService,
   ) {}
+
+  checkUser(entityLike: Pick<User, 'email' | 'username'>): Promise<boolean> {
+    return this._userService.exist(ObjectHelper.filterEmptyProps(User, entityLike));
+  }
 
   async signIn(username: string, pass: string): Promise<any> {
     const user = (await this._userService.findBy({ username }, { password: true })) as User | null;

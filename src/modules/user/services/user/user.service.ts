@@ -83,7 +83,7 @@ export class UserService {
    * @returns The updated user.
    */
   async update(id: string, updateUserDto: UpdateUserDto): Promise<Partial<User>> {
-    if (!(await this._existId(id))) {
+    if (!(await this.exist({ id }))) {
       throw new BadRequestException('User is deleted or does not exist.');
     }
 
@@ -100,7 +100,7 @@ export class UserService {
    * @returns The deleted user.
    */
   async delete(id: string): Promise<Partial<User>> {
-    if (!(await this._existId(id))) {
+    if (!(await this.exist({ id }))) {
       throw new BadRequestException('User is deleted or does not exist.');
     }
 
@@ -109,14 +109,11 @@ export class UserService {
     return await this._userRepo.save({ id, deleteTime: now, updateTime: now });
   }
 
-  /**
-   * Checks whether the given id exists within the database.
-   * @param id The user's id to be checked
-   * @returns `true` or `false`
-   */
-  private _existId(id: string): Promise<boolean> {
+  async exist(entityLike: Partial<User>): Promise<boolean> {
+    const props = ObjectHelper.filterEmptyProps(User, entityLike);
+
     try {
-      return this._userRepo.exist({ where: { id, deleteTime: IsNull() } });
+      return await this._userRepo.exist({ where: { ...props, deleteTime: IsNull() } });
     } catch (err) {
       throw new BadRequestException(err.message);
     }
