@@ -1,5 +1,6 @@
-import { Body, Get, Post, Query } from '@nestjs/common';
+import { Body, Get, Post, Query, Req } from '@nestjs/common';
 import { ControllerPrefix } from '../../shared/controller-prefix.enum';
+import { UtilityRequest } from 'src/shared/utility.type';
 import { CreateUserDto } from 'src/modules/user/dtos/create-user.dto';
 import { SignInResDto } from '../../dtos/sign-in-res.dto';
 import { AuthService } from '../../services/auth/auth.service';
@@ -10,6 +11,11 @@ import { Route } from '@decorators/route.decorator';
 @Route(ControllerPrefix.AUTH)
 export class AuthController {
   constructor(private readonly _authService: AuthService) {}
+
+  @Get('can-activate')
+  validate(@Query('required') required: string, @Req() { user }: UtilityRequest): Promise<boolean> {
+    return this._authService.checkUserAccess(user.userId, required.split(','));
+  }
 
   @Public()
   @Get('exist')
