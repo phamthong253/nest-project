@@ -64,7 +64,7 @@ export class UserService {
    */
   async create(createUserDto: CreateUserDto): Promise<User> {
     const user = this._userRepo.create(createUserDto);
-    const userRole = await this._roleService.findBy({ name: DefaultRole.USER });
+    const userRole = await this._roleService.findOneBy({ name: DefaultRole.USER });
 
     if (!userRole) {
       throw new InternalServerErrorException('The default User role is missing');

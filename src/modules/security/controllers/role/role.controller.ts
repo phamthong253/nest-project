@@ -15,6 +15,11 @@ import { Role } from '@models/role.entity';
 export class RoleController {
   constructor(private readonly _roleService: RoleService) {}
 
+  @Get('current-user')
+  getUserPermission(@Req() { user }: UtilityRequest): Promise<string[]> {
+    return this._roleService.findByUserId(user.userId);
+  }
+
   @Get()
   @Required(AppPermission.ROLE_READ)
   findAll(): Promise<Role[]> {
@@ -23,7 +28,7 @@ export class RoleController {
 
   @Get(':id')
   findOneById(@Param('id') id: string) {
-    return this._roleService.findBy({ id });
+    return this._roleService.findOneBy({ id });
   }
 
   @Post()

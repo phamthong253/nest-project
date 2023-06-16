@@ -1,14 +1,15 @@
-import { FindOptionsSelect, FindOptionsWhere, IsNull, Repository } from 'typeorm';
+import { DataSource, FindOptionsSelect, FindOptionsWhere, IsNull, Repository } from 'typeorm';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UpdateRoleDto } from '../../dtos/update-role.dto';
 import { CreateRoleDto } from '../../dtos/create-role.dto';
 import { ObjectHelper } from '@helpers/object.helper';
 import { Role } from '@models/role.entity';
+import { User } from '@models/user.entity';
 
 @Injectable()
 export class RoleService {
-  constructor(@InjectRepository(Role) private readonly _roleRepo: Repository<Role>) {}
+  constructor(@InjectRepository(Role) private readonly _roleRepo: Repository<Role>, private readonly _dataSource: DataSource) {}
 
   async findAll(select?: FindOptionsSelect<Role>): Promise<Role[]> {
     let _select = { id: true, name: true, createTime: true, updateTime: true, description: true, enabled: true };
@@ -20,7 +21,24 @@ export class RoleService {
     return await this._roleRepo.find({ select: _select, where: { deleteTime: IsNull() } });
   }
 
-  async findBy(where: FindOptionsWhere<Role>, select?: FindOptionsSelect<Role>): Promise<Role | null> {
+  async findByUserId(userId: string): Promise<string[]> {
+    const roleNameList: string[] = [];
+    const roleNames = await this._dataSource
+      .getRepository(User)
+      .createQueryBuilder('user')
+      .select('role.name', 'roleName')
+      .innerJoin('user.roles', 'role')
+      .where('user.id = :id AND role.enabled = true AND role.deleteTime IS NULL', { id: userId })
+      .getRawMany<{ roleName: string }>();
+
+    for (const { roleName } of roleNames) {
+      roleNameList.push(roleName);
+    }
+
+    return roleNameList;
+  }
+
+  async findOneBy(where: FindOptionsWhere<Role>, select?: FindOptionsSelect<Role>): Promise<Role | null> {
     let _select = { id: true, name: true, createTime: true, updateTime: true, description: true, enabled: true };
 
     if (select) {
