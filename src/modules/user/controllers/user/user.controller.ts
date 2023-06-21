@@ -27,7 +27,7 @@ export class UserController {
   @Get()
   @Required(AppPermission.USER_READ)
   findAll(): Promise<User[]> {
-    return this._userService.findAll({ roles: { id: true, name: true, enabled: true } });
+    return this._userService.findAll({ roles: { id: true } });
   }
 
   @Get(':id')
