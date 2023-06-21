@@ -1,4 +1,5 @@
-import { Body, Delete, Get, Param, Patch, Post, Req } from '@nestjs/common';
+import { Body, Delete, Get, Param, Patch, Post, Query, Req } from '@nestjs/common';
+import { FindOptionsSelect } from 'typeorm';
 import { ControllerPrefix } from '../../shared/controller-prefix.enum';
 import { UtilityRequest } from 'src/shared/utility.type';
 import { AppPermission } from '../../shared/permissions.enum';
@@ -15,15 +16,20 @@ import { Role } from '@models/role.entity';
 export class RoleController {
   constructor(private readonly _roleService: RoleService) {}
 
-  @Get('current-user')
-  getUserPermission(@Req() { user }: UtilityRequest): Promise<string[]> {
-    return this._roleService.findByUserId(user.userId);
-  }
-
   @Get()
   @Required(AppPermission.ROLE_READ)
-  findAll(): Promise<Role[]> {
-    return this._roleService.findAll();
+  findAll(@Query() options?: Record<string, any>): Promise<Role[]> {
+    let select: FindOptionsSelect<Role> = {};
+
+    if (options?.compact) {
+      select = { ...select, createTime: false, updateTime: false, description: false };
+    }
+
+    if (options?.permissions) {
+      select = { ...select, permissions: { id: true } };
+    }
+
+    return this._roleService.findAll(select);
   }
 
   @Get(':id')

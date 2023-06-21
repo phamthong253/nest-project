@@ -48,7 +48,9 @@ export class UserService {
 
     try {
       return await this._userRepo.findOne({
-        relations: { roles: true },
+        relations: {
+          roles: typeof select?.roles === 'boolean' ? select.roles : typeof select?.roles?.permissions ? { permissions: true } : undefined,
+        },
         select: _select,
         where: { ...where, deleteTime: IsNull() },
       });

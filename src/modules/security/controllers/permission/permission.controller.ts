@@ -1,10 +1,10 @@
 import { PermissionService } from '../../services/permission/permission.service';
 import { ControllerPrefix } from '../../shared/controller-prefix.enum';
-import { UtilityRequest } from 'src/shared/utility.type';
 import { AppPermission } from '../../shared/permissions.enum';
 import { ApiBearerAuth } from '@nestjs/swagger';
+import { Permission } from '@models/permission.entity';
+import { Get, Query } from '@nestjs/common';
 import { Required } from '@decorators/required-permission.decorator';
-import { Get, Req } from '@nestjs/common';
 import { Route } from '@decorators/route.decorator';
 
 @ApiBearerAuth()
@@ -14,12 +14,7 @@ export class PermissionController {
 
   @Get()
   @Required(AppPermission.PERMISSION_READ)
-  findAll(): Promise<string[]> {
-    return this._permissionService.findAll();
-  }
-
-  @Get('current-user')
-  getUserPermission(@Req() { user }: UtilityRequest): Promise<string[]> {
-    return this._permissionService.findByUserId(user.userId);
+  findAll(@Query('full') full?: boolean): Promise<string[] | Permission[]> {
+    return this._permissionService.findAll(full);
   }
 }

@@ -12,13 +12,21 @@ export class RoleService {
   constructor(@InjectRepository(Role) private readonly _roleRepo: Repository<Role>, private readonly _dataSource: DataSource) {}
 
   async findAll(select?: FindOptionsSelect<Role>): Promise<Role[]> {
-    let _select = { id: true, name: true, createTime: true, updateTime: true, description: true, enabled: true };
+    let _select: FindOptionsSelect<Role> = {
+      id: true,
+      name: true,
+      createTime: true,
+      updateTime: true,
+      description: true,
+      enabled: true,
+      permissions: false,
+    };
 
     if (select) {
       _select = { ..._select, ...select };
     }
 
-    return await this._roleRepo.find({ select: _select, where: { deleteTime: IsNull() } });
+    return await this._roleRepo.find({ select: _select, relations: { permissions: !!_select.permissions }, where: { deleteTime: IsNull() } });
   }
 
   async findByUserId(userId: string): Promise<string[]> {

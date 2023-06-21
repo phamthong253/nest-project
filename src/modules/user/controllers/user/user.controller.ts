@@ -1,4 +1,4 @@
-import { Body, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Delete, Get, Param, Patch, Post, Req } from '@nestjs/common';
 import { ControllerPrefix } from '../../shared/controller-prefix.enum';
 import { CreateUserDto } from '../../dtos/create-user.dto';
 import { UpdateUserDto } from '../../dtos/update-user.dto';
@@ -8,11 +8,21 @@ import { Route } from '@decorators/route.decorator';
 import { User } from '@models/user.entity';
 import { AppPermission } from 'src/modules/security/shared/permissions.enum';
 import { Required } from '@decorators/required-permission.decorator';
+import { UserDto } from '../../dtos/user.dto';
+import { UtilityRequest } from 'src/shared/utility.type';
 
 @ApiBearerAuth()
 @Route(ControllerPrefix.USERS)
 export class UserController {
   constructor(private readonly _userService: UserService) {}
+
+  @Get('current')
+  getCurrentUser(@Req() { user }: UtilityRequest) {
+    return this._userService.findBy(
+      { id: user.userId },
+      { createTime: false, updateTime: false, roles: { id: true, name: true, permissions: { id: true, name: true } } },
+    );
+  }
 
   @Get()
   @Required(AppPermission.USER_READ)
@@ -22,8 +32,8 @@ export class UserController {
 
   @Get(':id')
   @Required(AppPermission.USER_READ)
-  findById(@Param('id') id: string): Promise<User | null> {
-    return this._userService.findBy({ id }, { password: false, roles: { id: true, name: true, enabled: true } });
+  async findById(@Param('id') id: string): Promise<UserDto> {
+    return new UserDto((await this._userService.findBy({ id }, { password: false, roles: { id: true, name: true } })) ?? {});
   }
 
   @Post()

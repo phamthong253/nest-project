@@ -9,8 +9,13 @@ import { User } from '@models/user.entity';
 export class PermissionService {
   constructor(@InjectRepository(Permission) private readonly _permissionRepo: Repository<Permission>, private readonly _dataSource: DataSource) {}
 
-  async findAll(): Promise<string[]> {
+  async findAll(full?: boolean): Promise<string[] | Permission[]> {
     const permissions = await this._permissionRepo.find();
+
+    if (full) {
+      return permissions;
+    }
+
     const permissionNameList = [];
 
     for (const { name } of permissions) {
