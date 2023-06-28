@@ -19,7 +19,17 @@ export class CommissionService {
   ) {}
 
   async findAll(select?: FindOptionsSelect<Commission>, params?: Record<string, any>): Promise<Commission[]> {
-    let _select = { id: true, name: true, createTime: true, imageSrc: true, price: true };
+    const requiredPermissions = [AppPermission.COMMISSION_READ, AppPermission.COMMISSION_DELETE, AppPermission.COMMISSION_MODIFY];
+    let _select: FindOptionsSelect<Commission> = {
+      id: true,
+      name: true,
+      createTime: true,
+      imageSrc: true,
+      price: true,
+      createdBy: { id: true },
+      updatedBy: { id: true },
+      ownedBy: { id: true },
+    };
 
     if (select) {
       _select = { ..._select, ...select };
@@ -29,7 +39,6 @@ export class CommissionService {
       const { user, userId } = params;
 
       if (user.userId !== userId) {
-        const requiredPermissions = [AppPermission.COMMISSION_READ, AppPermission.COMMISSION_DELETE, AppPermission.COMMISSION_MODIFY];
         const userPermissions = await this._permissionService.findByUserId(user.userId);
 
         if (!requiredPermissions.every((permission) => userPermissions.includes(permission))) {
@@ -39,8 +48,8 @@ export class CommissionService {
 
       return this._commissionRepo.find({
         select: _select,
-        relations: { type: true },
-        where: { ownedBy: { id: userId }, deleteTime: IsNull() },
+        relations: { type: true, createdBy: true, updatedBy: true, ownedBy: true },
+        where: { createdBy: { id: userId }, deleteTime: IsNull() },
       });
     }
 
