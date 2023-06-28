@@ -4,10 +4,10 @@ import { Role } from './role.entity';
 
 @Entity()
 export class User extends TransientEntity {
-  @Column({ type: 'varchar', length: 50, unique: true })
+  @Column({ type: 'varchar', length: 50 })
   username: string;
 
-  @Column({ type: 'varchar', length: 400, unique: true })
+  @Column({ type: 'varchar', length: 400 })
   email: string;
 
   @Column({ type: 'text' })

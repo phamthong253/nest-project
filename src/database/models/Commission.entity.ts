@@ -19,6 +19,9 @@ export class Commission extends TransientEntity {
   price: number;
 
   @ManyToOne(() => User, (user) => user.id)
+  ownedBy: User;
+
+  @ManyToOne(() => User, (user) => user.id)
   @JoinColumn()
   createdBy: User;
 
