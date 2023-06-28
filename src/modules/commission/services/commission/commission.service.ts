@@ -56,11 +56,19 @@ export class CommissionService {
       throw new BadRequestException('Commission type is deleted or does not exist');
     }
 
-    const { name, imageSrc, price, typeId } = createCommissionDto;
+    const { name, imageSrc, price, typeId, toUserId } = createCommissionDto;
     const modifyUser = { id: userId };
 
     return await this._commissionRepo.save(
-      this._commissionRepo.create({ name, imageSrc, price, type: { id: typeId }, createdBy: modifyUser, updatedBy: modifyUser }),
+      this._commissionRepo.create({
+        name,
+        imageSrc,
+        price,
+        type: { id: typeId },
+        createdBy: modifyUser,
+        updatedBy: modifyUser,
+        ownedBy: { id: toUserId },
+      }),
     );
   }
 

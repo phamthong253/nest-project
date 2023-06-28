@@ -13,6 +13,10 @@ export class CreateCommissionDto {
   @IsString()
   typeId: string;
 
+  @IsNotEmpty()
+  @IsString()
+  toUserId: string;
+
   @IsNumber()
   @IsNotEmpty()
   price: number;
