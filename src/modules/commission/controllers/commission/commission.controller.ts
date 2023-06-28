@@ -1,6 +1,7 @@
-import { Body, Delete, Get, Param, Patch, Post, Req } from '@nestjs/common';
+import { Body, Delete, Get, Param, Patch, Post, Query, Req } from '@nestjs/common';
 import { CreateCommissionDto } from '../../dtos/create-commission.dto';
 import { UpdateCommissionDto } from '../../dtos/update-commission.dto';
+import { QueryCommissionDto } from '../../dtos/query-commission.dto';
 import { CommissionService } from '../../services/commission/commission.service';
 import { ControllerPrefix } from '../../shared/controller-prefix.enum';
 import { UtilityRequest } from 'src/shared/utility.type';
@@ -17,8 +18,8 @@ export class CommissionController {
 
   @Get()
   @Required(AppPermission.COMMISSION_READ)
-  getAll(): Promise<Commission[]> {
-    return this._commissionService.findAll({ type: { id: true, name: true } });
+  getAll(@Query() params: QueryCommissionDto, @Req() { user }: UtilityRequest): Promise<Commission[]> {
+    return this._commissionService.findAll({ type: { id: true, name: true } }, { ...params, user });
   }
 
   @Post()

@@ -6,10 +6,12 @@ import { CommissionType } from '@models/commission-type.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Commission } from '@models/commission.entity';
 import { Module } from '@nestjs/common';
+import { Permission } from '@models/permission.entity';
+import { PermissionService } from '../security/services/permission/permission.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Commission, CommissionType])],
+  imports: [TypeOrmModule.forFeature([Commission, CommissionType, Permission])],
   controllers: [CommissionController, CommissionTypeController],
-  providers: [CommissionService, CommissionTypeService],
+  providers: [CommissionService, CommissionTypeService, PermissionService],
 })
 export class CommissionModule {}
