@@ -89,6 +89,10 @@ export class UserService {
       throw new BadRequestException('User is deleted or does not exist.');
     }
 
+    if (updateUserDto.password) {
+      updateUserDto.password = await this._encryptService.hash(updateUserDto.password);
+    }
+
     return await this._userRepo.save({
       id,
       ...ObjectHelper.filterEmptyProps(UpdateUserDto, updateUserDto),
