@@ -7,7 +7,7 @@ import { ControllerPrefix } from '../../shared/controller-prefix.enum';
 import { UtilityRequest } from 'src/shared/utility.type';
 import { AppPermission } from 'src/modules/security/shared/permissions.enum';
 import { ApiBearerAuth } from '@nestjs/swagger';
-import { Commission } from '@models/commission.entity';
+import { Commission } from 'src/database/models/commission.entity';
 import { Required } from '@decorators/required-permission.decorator';
 import { Route } from '@decorators/route.decorator';
 
